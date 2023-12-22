@@ -2,9 +2,21 @@
 
 from app import db
 
-class User(db.Model):
+class Currency(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), unique=True, nullable=False)
+    name = db.Column(db.String(50))
+    symbol = db.Column(db.String(10))
 
-    def __repr__(self):
-        return f"User('{self.username}')"
+class Record(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    currency_id = db.Column(db.Integer, db.ForeignKey('currency.id'))
+    date = db.Column(db.DateTime)
+    high = db.Column(db.Float)
+    low = db.Column(db.Float)
+    open = db.Column(db.Float)
+    close = db.Column(db.Float)
+    volume = db.Column(db.Float)
+    marketcap = db.Column(db.Float)
+
+    # Define a relationship to Currency
+    currency = db.relationship('Currency', back_populates='records')
