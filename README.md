@@ -16,17 +16,35 @@ Welcome to the backend repository for the Crypto Price Analysis project. This re
 
 ## API Endpoints
 ## Development
-  * Technologies
-  * Security
-  * Database
-  * Testing
+  ### 1. Technologies
+  ### 2. Database
+  ### 3. Testing
+  ### 4. Security
+  - Environment Variables
+    - Ensure the security of your application by handling sensitive information through environment variables.
+    - A crucial step is to create an `.env` file to store sensitive configuration details.
+  - Sample .env Configuration
+  ```dotenv
+  DB_ENDPOINT="your_database_endpoint"
+
+  DB_USERNAME="your_database_username"
+
+  DB_PASSWORD="your_database_password"
+
+  DB_NAME="your_database_name"
+
+  GOOGLE_FILE_ID="your_google_file_id"
+
+  CSV_FILE_FOLDER="your_csv_file_folder"
+  ```
+
 ## Deployment
-  * Virtulenv
-  * Docker
-  * AWS
+  ### 1. Virtulenv
+  ### 2. Docker
+  ### 3. AWS
 ## Advanced Solution
 ## Developed By
-- The application is developed by _[is0xjh25 (Yun-Chi Hsiao)](https://is0xjh25.github.io).
+- The application is developed by _[is0xjh25 (Yun-Chi Hsiao)](https://is0xjh25.github.io)_.
 - Special thanks to the _[Greythorn Team](https://greythorn.com)_ for providing this coding challenge and their guidance throughout the development process. 
 <br/>
 <p align="left">
