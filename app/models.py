@@ -1,11 +1,16 @@
 # app/models.py
 
-from app import db
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
 
 class Currency(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))
     symbol = db.Column(db.String(10))
+
+    # Define a relationship to Record
+    records = db.relationship('Record', back_populates='currency')
 
 class Record(db.Model):
     id = db.Column(db.Integer, primary_key=True)
