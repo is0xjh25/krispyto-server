@@ -37,6 +37,9 @@ Welcome to the backend repository for the Crypto Price Analysis project. This re
 
   CSV_FILE_FOLDER="your_csv_file_folder"
   ```
+- Protect the Credentials
+  - Never expose your .env file publicly or commit it to version control systems.
+  - Add the .env file to the .gitignore to prevent accidental exposure.
 
 ## Deployment
   ### 1. Virtulenv
