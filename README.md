@@ -26,7 +26,7 @@ Welcome to the backend repository for the Crypto Price Analysis project. This re
   * AWS
 ## Advanced Solution
 ## Developed By
-- The application is developed by _[is0xjh25 (Yun-Chi Hsiao)](https://is0xjh25.github.io)_
+- The application is developed by _[is0xjh25 (Yun-Chi Hsiao)](https://is0xjh25.github.io).
 - Special thanks to the _[Greythorn Team](https://greythorn.com)_ for providing this coding challenge and their guidance throughout the development process. 
 <br/>
 <p align="left">
