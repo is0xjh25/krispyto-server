@@ -1,5 +1,7 @@
 # Krispyto's Server
-
+<p align="left">
+  <img alt="Logo" src="images/krispyto-logo.png" width="450" >
+  
 ## Table of Contents
 * [Overview](#overview)
 * [API Endpoints](#api-endpoints)
@@ -28,4 +30,4 @@ Welcome to the backend repository for the Crypto Price Analysis project. This re
 - Special thanks to the _[Greythorn Team](https://greythorn.com)_ for providing this coding challenge and their guidance throughout the development process. 
 <br/>
 <p align="left">
-  <img alt="Favicon" src="src/images/is0-favicon.png" width="250" >
+  <img alt="Favicon" src="images/is0-favicon.png" width="250" >
