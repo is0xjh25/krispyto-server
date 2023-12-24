@@ -35,11 +35,11 @@ Welcome to the backend repository of the Crypto Price Analysis project! Here, yo
   - `[GET] http://localhost:5000/dashboard?id=all&date=2022-12-24&order_by=price&order_type=desc`
   - `[GET] http://localhost:5000/dashboard?id=btc,aave&date=2021-11-9&order_by=1m&order_type=asc`
 ### 2. Search Crypto Exists In Database
-- **Endpoint:** `/search/name`
+- **Endpoint:** `/search`
 - **Method:** `GET`
 - **Description:** Retrieve the name of a specific currency by name.
 - **Parameters:**
-  - N/A
+  - `name` (string, required): Name or symbol of the currency to retrieve.
 - **Responses:**
   - `200`: Crypto found.
   - `204`: No data available.
@@ -47,8 +47,8 @@ Welcome to the backend repository of the Crypto Price Analysis project! Here, yo
   - `404`: Bad request.
   - `500`: Database connection error.
 - **Example:**
-  - `[GET] http://localhost:5000/search/Bitcoin`
-  - `[GET] http://localhost:5000/search/btc`
+  - `[GET] http://localhost:5000/search?name=Bitcoin`
+  - `[GET] http://localhost:5000/search?name=btc`
  
 > _To explore the API documentation and test its functionality, please visit this [SwaggerHub](https://app.swaggerhub.com/apis/is0xjh25/Krispyto/1.0.0) link._  
 ## Development and Technologies
