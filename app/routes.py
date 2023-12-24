@@ -53,7 +53,6 @@ def search_crypto_prices():
     crypto = read_crypto_id(crypto_id)
     processed_crypto = process_crypto(crypto, date)
     ordered_crypto = order_crypto(processed_crypto, order_by, order_type)
-
     return jsonify(ordered_crypto), 200
 
 # Route for searching crypto existence in the database
@@ -152,15 +151,13 @@ def process_crypto(crypto, date):
 
                     # Append the dictionary to the array
                     crypto_data.append(crypto_entry)
-                else:
-                    # Skip if there are not enough records for the last 30 days
-                    print(f"Not enough records for Symbol: {symbol}")
-            else:
-                # Handle case where no currency is found for the symbol
-                print(f"No currency found for Symbol: {symbol}")
+            #     else:
+            #         print(f"[Server] Not enough records for Symbol: {symbol}")
+            # else:
+            #     print(f"[Server] No currency found for Symbol: {symbol}")
         except Exception as e:
             # Handle any other exceptions that might occur during the process
-            print(f"An error occurred for Symbol: {symbol}. Error: {str(e)}")
+            print(f"[Server] An error occurred for Symbol: {symbol}. Error: {str(e)}")
 
     return crypto_data
 

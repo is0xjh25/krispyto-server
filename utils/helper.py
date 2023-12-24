@@ -30,9 +30,6 @@ def download_and_extract_zip(file_id, dest_path):
 def read_files_and_upload(app, src_path):
     try:
         with app.app_context():
-            # Delete each record
-            # remove_all_data()
-
             # Iterate through each file in the specified directory
             for filename in os.listdir(src_path):
                 file_path = os.path.join(src_path, filename)
