@@ -16,6 +16,6 @@ def create_app(config_class=Config):
     migrate.init_app(app, db)
 
     # Check the status of database
-    inspect_database(app)
+    inspect_database(app) # Comment out the line below before migration
 
     return app
