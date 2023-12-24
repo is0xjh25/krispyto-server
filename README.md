@@ -27,9 +27,10 @@ Welcome to the backend repository of the Crypto Price Analysis project! Here, yo
   - `order_type` (string, required, default: 'desc', enum: ['asc', 'desc']): Order results in 'asc' (ascending) or 'desc' (descending) order.
 - **Responses:**
   - `200`: Search results matching criteria.
+  - `204`: No data available.
   - `400`: Bad input parameter.
-  - `404`: Data not found.
-  - `500`: Database Connection Error.
+  - `404`: Bad request.
+  - `500`: Database connection error.
 - **Example:**
   - `[GET] http://localhost:5000/dashboard?id=all&date=2022-12-24&order_by=price&order_type=desc`
   - `[GET] http://localhost:5000/dashboard?id=btc,aave&date=2021-11-9&order_by=1m&order_type=asc`
@@ -41,9 +42,10 @@ Welcome to the backend repository of the Crypto Price Analysis project! Here, yo
   - N/A
 - **Responses:**
   - `200`: Crypto found.
+  - `204`: No data available.
   - `400`: Bad input parameter.
-  - `404`: Data not found.
-  - `500`: Database Connection Error.
+  - `404`: Bad request.
+  - `500`: Database connection error.
 - **Example:**
   - `[GET] http://localhost:5000/search/Bitcoin`
   - `[GET] http://localhost:5000/search/btc`
