@@ -15,7 +15,12 @@ def create_app(config_class=Config):
     db.init_app(app)
     migrate.init_app(app, db)
 
-    # Check the status of database
-    inspect_database(app) # Comment out the line below before migration
+    # Check the status of the database only if it's not the testing environment
+    if not app.config['TESTING']:
+        inspect_database(app)  # Comment out before migration
+
+    # Import and register your routes
+    from app import routes
+    app.register_blueprint(routes.bp)
 
     return app

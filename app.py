@@ -5,5 +5,5 @@ from config.settings import Config
 
 app = create_app(config_class=Config)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == "__main__":
+    app.run() #flask run --debug --port=8000

@@ -1,29 +1,25 @@
 # app/routes.py
 
-from flask import jsonify, request
+import re
+from flask import Blueprint, jsonify, request
 from sqlalchemy import func
 from datetime import datetime, timedelta
-from app import app, db
-from app.models import Currency, Record  # Make sure to import your models
+from app.models import Currency, Record
+from app import db
 
-# Define a regular expression pattern for date validation
+bp = Blueprint('main', __name__)
+
 date_pattern = re.compile(r'\d{4}-\d{2}-\d{2}')
 
 # Define a before_request function to check for 404 errors
-@app.before_request
+@bp.before_request
 def check_for_404():
     if request.endpoint is None:
         return jsonify({"error": "Bad request."}), 404
 
-@app.route('/dashboard', methods=['GET'])
+# Route for getting crypto records
+@bp.route('/dashboard', methods=['GET'])
 def search_crypto_prices():
-    try:
-        # Check if the database connection is successful
-        db.engine.execute("SELECT 1")
-    except Exception as e:
-        # If the database connection fails, return a 500 Internal Server Error response
-        return jsonify({"error": "Database connection error."}), 500
-
     # Extract parameters from the request
     crypto_id = request.args.get('id')
     date = request.args.get('date')
@@ -56,20 +52,13 @@ def search_crypto_prices():
     # Read the crypto(s) for the dashboard
     crypto = read_crypto_id(crypto_id)
     processed_crypto = process_crypto(crypto, date)
-    ordered_crypto = ordered_crypto(processed_crypto, order_by, order_type)
+    ordered_crypto = order_crypto(processed_crypto, order_by, order_type)
 
     return jsonify(ordered_crypto), 200
 
 # Route for searching crypto existence in the database
-@app.route('/search', methods=['GET'])
+@bp.route('/search', methods=['GET'])
 def search_crypto_exists():
-    try:
-        # Check if the database connection is successful
-        db.engine.execute("SELECT 1")
-    except Exception as e:
-        # If the database connection fails, return a 500 Internal Server Error response
-        return jsonify({"error": "Database connection error."}), 500
-
     # Extract parameter from the request
     crypto_name = request.args.get('name')
 
@@ -89,8 +78,9 @@ def search_crypto_exists():
         response_data = {"name": currency.name, "symbol": currency.symbol}
         return jsonify(response_data), 200
     else:
-        return jsonify({"error": f"No currency found with name or symbol '{crypto_name}'."}), 203
+        return jsonify({"error": f"No currency found with name or symbol '{crypto_name}'."}), 204
 
+# Extracts the list of crypto symbols based on the provided crypto_id
 def read_crypto_id(crypto_id):
     crypto_list = []
     if crypto_id == 'all':
@@ -101,10 +91,10 @@ def read_crypto_id(crypto_id):
         crypto_list.extend(crypto_ids)
     return crypto_list
 
+# Verifies if there are records for the previous 30 days based on the provided date
 def verify_date(date):
     try:
         input_date = datetime.strptime(date, '%Y-%m-%d')
-
         start_date = input_date - timedelta(days=30)
 
         records_in_range = Record.query.filter(
@@ -118,16 +108,17 @@ def verify_date(date):
         # Handle invalid date format
         return False
 
+# Processes crypto data for the specified symbols and date
 def process_crypto(crypto, date):
     crypto_data = []
 
     for symbol in crypto:
         try:
-            currency = Currency.query.filter_by(symbol=symbol).first()
+            currency = Currency.query.filter(func.lower(Currency.symbol).ilike(func.lower(symbol))).first()
 
             if currency:
                 # Find the associated records for the previous 30 days
-                end_date = date
+                end_date = datetime.strptime(date, '%Y-%m-%d')
                 start_date = end_date - timedelta(days=30)
                 previous_records = Record.query.filter(
                     Record.currency_id == currency.id,
@@ -173,7 +164,8 @@ def process_crypto(crypto, date):
 
     return crypto_data
 
-def ordered_crypto(processed_crypto, order_by, order_type):
+# Orders the processed_crypto data based on specified criteria
+def order_crypto(processed_crypto, order_by, order_type):
     # Define a mapping of order_by values to corresponding fields in the processed_crypto data
     order_by_mapping = {
         'crypto': 'crypto',

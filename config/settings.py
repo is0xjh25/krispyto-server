@@ -14,3 +14,7 @@ class Config:
     CSV_FILE_FOLDER = os.getenv("CSV_FILE_FOLDER")
     SQLALCHEMY_DATABASE_URI = f"postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_ENDPOINT}/{DB_NAME}"
     SQLALCHEMY_TRACK_MODIFICATIONS = False  # Disable Flask-SQLAlchemy
+
+class TestConfig(Config):
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
