@@ -5,19 +5,45 @@
 ## Table of Contents
 * [Overview](#overview)
 * [API Endpoints](#api-endpoints)
-* [Deveploment](#development)
+* [Deveploment and Technologies](#development-and-technologies)
 * [Deployment](#deployment)
 * [Advanced Solution](#advanced-solution)
 * [Developed By](#developed-by)
   
 ## Overview
-
 Welcome to the backend repository for the Crypto Price Analysis project. This repository contains the server-side implementation of a system that analyzes historical crypto prices and provides relevant data through a RESTful API.
 
 ## API Endpoints
-## Development
-  ### 1. Technologies
+## Development and Technologies
+  ### 1. Server
+  - Language: Python
+  - Framework: Flask
+  - Hosting: AWS
+  - API: RESTful API meticulously documented using Swagger
   ### 2. Database
+  - Type: SQL
+  - Database System: PostgreSQL
+  - Hosting: AWS RDS
+  - Schema:
+    | Currency Table  |           | Record Table           |           |
+    |-----------------|-----------|------------------------|-----------|
+    | id (PK)         | Integer   | id (PK)                | Integer   |
+    | name            | String(50)| currency_id (FK)       | Integer   |
+    | symbol          | String(10)| date                   | DateTime  |
+    |                 |           | high                   | Float     |
+    |                 |           | low                    | Float     |
+    |                 |           | open                   | Float     |
+    |                 |           | close                  | Float     |
+    |                 |           | volume                 | Float     |
+    |                 |           | marketcap              | Float     |
+    
+  - ORM: Utilizing SQLAlchemy, seamlessly integrated with Flask in Python
+  - Migration:
+    ```
+    > flask db init
+    > flask db migrate -m "Create Currency and Record tables"
+    > flask db upgrade
+    ```
   ### 3. Testing
   ### 4. Security
   - Environment Variables
