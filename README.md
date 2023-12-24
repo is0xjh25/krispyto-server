@@ -12,10 +12,43 @@
   
 ## Overview
 Welcome to the backend repository of the Crypto Price Analysis project! Here, you'll discover the server-side implementation of a system dedicated to analyzing historical crypto prices and delivering pertinent data through a RESTful API. Developed using Python and Flask, it employs a structured architecture with controllers and models utilizing Object–Relational Mapping. The deployment is seamlessly handled through Amazon Web Services (AWS). This readme comprehensively outlines the API endpoints and details the phases of structuring the database, development, and deployment. Feel free to explore the website and the backend server repository using the links provided below.
-- _[Krispyto's Website](url)_
-- _[Krispyto's Web Server](https://github.com/is0xjh25/krispyto-web)_
+> - _[Krispyto's Website](url)_
+> - _[Krispyto's Web Server](https://github.com/is0xjh25/krispyto-web)_
 
 ## API Endpoints
+### 1. Search Crypto Prices
+- **Endpoint:** `/dashboard`
+- **Method:** `GET`
+- **Description:** Retrieve historical crypto prices based on specified parameters.
+- **Parameters:**
+  - `id` (string, required): ID of the currency to retrieve prices for.
+  - `date` (string, required, default: '2022-10-9'): Date to filter prices.
+  - `order_by` (string, required, default: 'crypto', enum: ['crypto', 'price', '24h', '7d', '1m', '24h-volume', 'market_cap']): Attribute to order results by.
+  - `order_type` (string, required, default: 'desc', enum: ['asc', 'desc']): Order results in 'asc' (ascending) or 'desc' (descending) order.
+- **Responses:**
+  - `200`: Search results matching criteria.
+  - `400`: Bad input parameter.
+  - `404`: Data not found.
+  - `500`: Database Connection Error.
+- **Example:**
+  - `[GET] http://localhost:5000/dashboard?id=all&date=2022-12-24&order_by=price&order_type=desc`
+  - `[GET] http://localhost:5000/dashboard?id=btc,aave&date=2021-11-9&order_by=1m&order_type=asc`
+### 2. Search Crypto Exists In Database
+- **Endpoint:** `/search/name`
+- **Method:** `GET`
+- **Description:** Retrieve the name of a specific currency by name.
+- **Parameters:**
+  - N/A
+- **Responses:**
+  - `200`: Crypto found.
+  - `400`: Bad input parameter.
+  - `404`: Data not found.
+  - `500`: Database Connection Error.
+- **Example:**
+  - `[GET] http://localhost:5000/search/Bitcoin`
+  - `[GET] http://localhost:5000/search/btc`
+ 
+> _To explore the API documentation and test its functionality, please visit this [SwaggerHub](https://app.swaggerhub.com/apis/is0xjh25/Krispyto/1.0.0) link._  
 ## Development and Technologies
   ### 1. Server
   - **Language =>** Python
@@ -41,10 +74,23 @@ Welcome to the backend repository of the Crypto Price Analysis project! Here, yo
     
   - **ORM =>** Utilizing SQLAlchemy, seamlessly integrated with Flask in Python
   - **Migration**
-    ```
+    ```shell
     > flask db init
     > flask db migrate -m "Create Currency and Record tables"
     > flask db upgrade
+    ```
+    > Before running migration, please comment out the following line in the `create_app` function in `app/__init__.py`:
+    ```python
+      def create_app(config_class=Config):
+          app = Flask(__name__)
+          app.config.from_object(config_class)
+
+          db.init_app(app)
+          migrate.init_app(app, db)
+    
+          inspect_database(app) # Comment out the line below before migration
+
+      return app
     ```
   ### 3. Testing
   ### 4. Security
