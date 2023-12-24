@@ -75,13 +75,36 @@ Welcome to the backend repository of the Crypto Price Analysis project! Here, yo
     |                 |           | marketcap              | Float     |
     
   - **ORM =>** Utilizing SQLAlchemy, seamlessly integrated with Flask in Python
+    ```python
+    # app/models.py
+    
+    db = SQLAlchemy()
+    
+    class Currency(db.Model):
+        id = db.Column(db.Integer, primary_key=True)
+        name = db.Column(db.String(50))
+        symbol = db.Column(db.String(10))
+        records = db.relationship('Record', back_populates='currency')
+    
+    class Record(db.Model):
+        id = db.Column(db.Integer, primary_key=True)
+        currency_id = db.Column(db.Integer, db.ForeignKey('currency.id'))
+        date = db.Column(db.DateTime)
+        high = db.Column(db.Float)
+        low = db.Column(db.Float)
+        open = db.Column(db.Float)
+        close = db.Column(db.Float)
+        volume = db.Column(db.Float)
+        marketcap = db.Column(db.Float)
+        currency = db.relationship('Currency', back_populates='records')
+    ```
   - **Migration**
     ```shell
     > flask db init
     > flask db migrate -m "Create Currency and Record tables"
     > flask db upgrade
     ```
-    > Before running migration, please comment out the following line in the `create_app` function in `app/__init__.py`:
+      > Before running migration, please comment out the following line in the `create_app` function in `app/__init__.py`:
     ```python
       def create_app(config_class=Config):
           app = Flask(__name__)
@@ -90,29 +113,75 @@ Welcome to the backend repository of the Crypto Price Analysis project! Here, yo
           db.init_app(app)
           migrate.init_app(app, db)
     
-          inspect_database(app) # Comment out the line below before migration
+          inspect_database(app) if not app.config['TESTING'] else None  # Comment out before migration
 
       return app
-    ```
+      ```
+  
   ### 3. Testing
-  ### 4. Security
-  - Environment Variables
-    - Ensure the security of your application by handling sensitive information through environment variables.
-    - A crucial step is to create an `.env` file to store sensitive configuration details.
-  - Sample .env Configuration
-  ```dotenv
-  DB_ENDPOINT="your_database_endpoint"
+  - **inspect_database() =>** The `inspect_database()` function in the Flask application uses SQLAlchemy's Inspector to assess the database status. It excludes the "alembic_version" table and raises an exception if no tables are found, indicating the need for migrations. The function verifies each table for data existence, initiating a process to download, extract, and upload data from [Google Drive](https://drive.google.com/file/d/1XBMlxjtyuAGdrfB0tPXDQT7H_qLIvJGF/view?usp=sharing) (supplied by the _[Greythorn Team](https://greythorn.com)_) if any table is empty. This ensures the database's integrity with essential information and concludes by printing a completion message.
 
-  DB_USERNAME="your_database_username"
+    ```python
+    def inspect_database(app):
 
-  DB_PASSWORD="your_database_password"
+      with app.app_context():
+          inspector = inspect(db.engine)
+          table_names = inspector.get_table_names()
+          table_names = [table for table in table_names if table != "alembic_version"]
+    
+          # Check if there are tables
+          if not table_names:
+              raise Exception("No tables found. Please run migrations first.")
+  
+          # Loop through all tables and check if each table has at least one row of data
+          for table_name in table_names:
+              query = text(f"SELECT 1 FROM {table_name} LIMIT 1")
+              query_result = db.session.execute(query).fetchone()
+              if query_result is None:
+                  # Download and extract the data from Google Drive
+                  download_and_extract_zip(app.config['GOOGLE_FILE_ID'], app.config['CSV_FILE_FOLDER'])
+                  # Process data
+                  read_files_and_upload(app, app.config['CSV_FILE_FOLDER'])
+                  break
+    ```
+  - **Pytest**
+    | **File**        | **Test Category**                 | **Test Description**                                           |
+    |-----------------|----------------------------------|----------------------------------------------------------------|
+    | **test_db.py**  | Database Connection Test         | The `test_database_connection` function ensures successful database connectivity.                                           |
+    |                 | Empty Database Test               | The `test_database_empty` function checks if the database is not empty.                                                     |
+    |                 | First Table Data Test             | The `test_first_table_has_data` function verifies that the first table has data.                                            |
+    | **test_api.py** | Search Crypto Prices Tests        | `test_search_crypto_prices_all` tests searching crypto prices for all cryptocurrencies.                                    |
+    |                 |                                  | `test_search_crypto_prices_favourite` tests searching crypto prices for a specific cryptocurrency (favorite).             |
+    |                 |                                  | `test_search_crypto_prices_not_found` tests searching crypto prices with invalid parameters.                               |
+    |                 | Search Crypto Existence Tests     | `test_search_crypto_exists_name` tests searching crypto existence by name.                                                  |
+    |                 |                                  | `test_search_crypto_exists_symbol` tests searching crypto existence by symbol.                                              |
+    |                 |                                  | `test_search_crypto_exists_name_not_found` tests searching for a non-existing crypto by name.                             |
+    |                 | Bad Request Handling Test         | `test_bad_request` ensures proper handling of bad requests with a 404 status.                                               |
 
-  DB_NAME="your_database_name"
+    > The app fixture in test_api.py orchestrates the establishment of a testing Flask app. This includes configuring a dedicated testing environment using the TestConfig class, which inherits from the base Config class. In this configuration, TESTING is set to True, and the SQLALCHEMY_DATABASE_URI is configured to use an in-memory SQLite database ('sqlite:///:memory:'). This setup ensures the creation of a lightweight database tailored for testing purposes, distinct from the main application's configuration.
 
-  GOOGLE_FILE_ID="your_google_file_id"
+- **Postman =>** Concerning Postman, which is utilized for API testing, it serves the purpose of testing the API against a live or real database. Additionally, it includes similar tests to those executed in the testing environment.
 
-  CSV_FILE_FOLDER="your_csv_file_folder"
-  ```
+  > _To explore the API documentation and test its functionality, please visit this [Postman](https://api.postman.com/collections/17378533-074e5fc8-38fe-4099-917d-9f6faa5990b7?access_key=PMAT-01HJF3WYB2HGGNR1VBTXH93SEJ) link._  
+
+### 4. Security
+- Environment Variables
+  - Ensure the security of your application by handling sensitive information through environment variables.
+  - A crucial step is to create an `.env` file to store sensitive configuration details.
+- Sample .env Configuration
+```dotenv
+DB_ENDPOINT="your_database_endpoint"
+
+DB_USERNAME="your_database_username"
+
+DB_PASSWORD="your_database_password"
+
+DB_NAME="your_database_name"
+
+GOOGLE_FILE_ID="your_google_file_id"
+
+CSV_FILE_FOLDER="your_csv_file_folder"
+```
 - Protect the Credentials
   - Never expose your .env file publicly or commit it to version control systems.
   - Add the .env file to the .gitignore to prevent accidental exposure.
@@ -121,6 +190,7 @@ Welcome to the backend repository of the Crypto Price Analysis project! Here, yo
   ### 1. AWS
   ### 2. Docker
   ### 3. Virtulenv
+  ### 4. Local
   
 ## Advanced Solution
 ## Developed By
