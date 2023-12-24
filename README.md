@@ -11,20 +11,22 @@
 * [Developed By](#developed-by)
   
 ## Overview
-Welcome to the backend repository for the Crypto Price Analysis project. This repository contains the server-side implementation of a system that analyzes historical crypto prices and provides relevant data through a RESTful API.
+Welcome to the backend repository of the Crypto Price Analysis project! Here, you'll discover the server-side implementation of a system dedicated to analyzing historical crypto prices and delivering pertinent data through a RESTful API. Developed using Python and Flask, it employs a structured architecture with controllers and models utilizing Object–Relational Mapping. The deployment is seamlessly handled through Amazon Web Services (AWS). This readme comprehensively outlines the API endpoints and details the phases of structuring the database, development, and deployment. Feel free to explore the website and the backend server repository using the links provided below.
+- _[Krispyto's Website](url)_
+- _[Krispyto's Web Server](https://github.com/is0xjh25/krispyto-web)_
 
 ## API Endpoints
 ## Development and Technologies
   ### 1. Server
-  - Language: Python
-  - Framework: Flask
-  - Hosting: AWS
-  - API: RESTful API meticulously documented using Swagger
+  - **Language =>** Python
+  - **Framework =>** Flask
+  - **Hosting =>** AWS
+  - **API =>** RESTful API meticulously documented using Swagger
   ### 2. Database
-  - Type: SQL
-  - Database System: PostgreSQL
-  - Hosting: AWS RDS
-  - Schema:
+  - **Type =>** SQL
+  - **Database System =>** PostgreSQL
+  - **Hosting =>** AWS RDS
+  - **Schema**
     | Currency Table  |           | Record Table           |           |
     |-----------------|-----------|------------------------|-----------|
     | id (PK)         | Integer   | id (PK)                | Integer   |
@@ -37,8 +39,8 @@ Welcome to the backend repository for the Crypto Price Analysis project. This re
     |                 |           | volume                 | Float     |
     |                 |           | marketcap              | Float     |
     
-  - ORM: Utilizing SQLAlchemy, seamlessly integrated with Flask in Python
-  - Migration:
+  - **ORM =>** Utilizing SQLAlchemy, seamlessly integrated with Flask in Python
+  - **Migration**
     ```
     > flask db init
     > flask db migrate -m "Create Currency and Record tables"
@@ -68,9 +70,10 @@ Welcome to the backend repository for the Crypto Price Analysis project. This re
   - Add the .env file to the .gitignore to prevent accidental exposure.
 
 ## Deployment
-  ### 1. Virtulenv
+  ### 1. AWS
   ### 2. Docker
-  ### 3. AWS
+  ### 3. Virtulenv
+  
 ## Advanced Solution
 ## Developed By
 - The application is developed by _[is0xjh25 (Yun-Chi Hsiao)](https://is0xjh25.github.io)_.
