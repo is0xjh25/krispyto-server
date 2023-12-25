@@ -45,14 +45,17 @@ def search_crypto_prices():
     # Validate 'order_type'
     if order_type not in valid_order_type_values:
         return jsonify({"error": "Invalid value for 'order_type'."}), 400
-    # Verify that there are records for the previous 30 days
-    if not verify_date(date):
-        return jsonify({"warning": "Invalid value for 'date'. No records for the previous 30 days."}), 204
 
     # Read the crypto(s) for the dashboard
     crypto = read_crypto_id(crypto_id)
+
+    # Verify that there are records for the previous 30 days
+    if not verify_date(crypto, date):
+        return jsonify({"warning": "Invalid value for 'date'. No records for the previous 30 days."}), 204
+
     processed_crypto = process_crypto(crypto, date)
     ordered_crypto = order_crypto(processed_crypto, order_by, order_type)
+
     return jsonify(ordered_crypto), 200
 
 # Route for searching crypto existence in the database
@@ -91,18 +94,31 @@ def read_crypto_id(crypto_id):
     return crypto_list
 
 # Verifies if there are records for the previous 30 days based on the provided date
-def verify_date(date):
+def verify_date(crypto, date):
     try:
         input_date = datetime.strptime(date, '%Y-%m-%d')
         start_date = input_date - timedelta(days=30)
 
-        records_in_range = Record.query.filter(
-            Record.date >= start_date,
-            Record.date <= input_date
-        ).all()
-        # Return True if there are records for the previous 30 days, otherwise False
-        return len(records_in_range) >= 30
+        for symbol in crypto:
+            currency_info = Currency.query.filter(func.lower(Currency.symbol) == func.lower(symbol)).first()
 
+            if currency_info:
+                records_in_range = Record.query.filter(
+                    Record.currency_id == currency_info.id,
+                    Record.date >= start_date,
+                    Record.date <= input_date
+                ).all()
+
+                # If any crypto has fewer than 30 records, return False
+                if len(records_in_range) < 30:
+                    return False
+            else:
+                # If the currency symbol is not found, consider it a failure
+                return False
+
+        # If all cryptos have 30 or more records, return True
+        return True
+    
     except ValueError:
         # Handle invalid date format
         return False

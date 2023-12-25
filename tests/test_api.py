@@ -22,8 +22,8 @@ def app():
         # Add test data for Record
         current_time = datetime.utcnow()
         thirty_days_ago = current_time - timedelta(days=30)
-        bitcoin_records = [Record(currency_id=bitcoin.id, date=current_time - timedelta(days=i), close=100 + i, volume=1000 + i, marketcap=10000 + i) for i in range(30)]
-        ethereum_records = [Record(currency_id=ethereum.id, date=current_time - timedelta(days=i), close=50 + i, volume=500 + i, marketcap=5000 + i) for i in range(30)]
+        bitcoin_records = [Record(currency_id=bitcoin.id, date=current_time - timedelta(days=i), close=100 + i, volume=1000 + i, marketcap=10000 + i) for i in range(31)]
+        ethereum_records = [Record(currency_id=ethereum.id, date=current_time - timedelta(days=i), close=50 + i, volume=500 + i, marketcap=5000 + i) for i in range(31)]
         db.session.add_all(bitcoin_records + ethereum_records)
         db.session.commit()
 
