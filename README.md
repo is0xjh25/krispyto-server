@@ -106,6 +106,8 @@ Welcome to the backend repository of the Crypto Price Analysis project! Here, yo
     ```
       > Before running migration, please comment out the following line in the `create_app` function in `app/__init__.py`:
     ```python
+      # app/__init__.py
+    
       def create_app(config_class=Config):
           app = Flask(__name__)
           app.config.from_object(config_class)
@@ -122,6 +124,8 @@ Welcome to the backend repository of the Crypto Price Analysis project! Here, yo
   - **inspect_database() =>** The `inspect_database()` function in the Flask application uses SQLAlchemy's Inspector to assess the database status. It excludes the "alembic_version" table and raises an exception if no tables are found, indicating the need for migrations. The function verifies each table for data existence, initiating a process to download, extract, and upload data from [Google Drive](https://drive.google.com/file/d/1XBMlxjtyuAGdrfB0tPXDQT7H_qLIvJGF/view?usp=sharing) (supplied by the _[Greythorn Team](https://greythorn.com)_) if any table is empty. This ensures the database's integrity with essential information and concludes by printing a completion message.
 
     ```python
+    # utilities/helper.py
+    
     def inspect_database(app):
 
       with app.app_context():
@@ -189,8 +193,48 @@ CSV_FILE_FOLDER="your_csv_file_folder"
 ## Deployment
   ### 1. AWS
   ### 2. Docker
+  Place the Docker file in the same directory and execute the following command.
+  ```shell
+  > docker build -t krispyto-server .  # Builds a Docker image with the tag "krispyto-server."
+  > docker run -p 8000:8000 --env-file ./.env  # Runs a Docker container, mapping port 8000 and using environment variables from ".env."
+  ```
+  ```dockerfile
+  # dockerfile
+
+  # Use a base image
+  FROM python:3.9
+  
+  # Set the working directory
+  WORKDIR /app
+  
+  # Copy the application files
+  COPY . . 
+  
+  ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL True
+  
+  # Install MPICH
+  RUN apt-get update && apt-get install -y mpich
+  RUN pip install --upgrade pip
+  
+  # Install dependencies from a list
+  RUN pip install -r requirements.txt
+  
+  # Expose the application port
+  EXPOSE 8000
+  
+  # Start the application
+  CMD ["flask", "run","--host","0.0.0.0","--port","8000"]
+  ```
+  > To enhance security and facilitate dynamic configuration changes, exclude the .env file from the local project directory when building the Docker image. This ensures that sensitive information is not shipped with the image, and modifications to the database URL won't necessitate rebuilding the image.
   ### 3. Virtulenv
-  ### 4. Local
+  All development occurs within the virtual environment, ensuring a stable environment with all required libraries and their versions listed in the [requirements.txt](/requirements.txt) file.
+  ```shell
+  > python3 -m venv venv        # Creates a virtual environment named "venv."
+  > source venv/bin/activate    # Activates the virtual environment.
+  > pip install --upgrade pip   # Upgrades the pip package manager.
+  > pip install -r requirements.txt   # Installs dependencies listed in the "requirements.txt" file.
+  > pip freeze > requirements.txt   # Freezes and saves the current package versions to "requirements.txt."
+  ```
   
 ## Advanced Solution
 ## Developed By
