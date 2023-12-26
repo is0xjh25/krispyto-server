@@ -192,6 +192,11 @@ CSV_FILE_FOLDER="your_csv_file_folder"
 
 ## Deployment
   ### 1. AWS
+  I leverage _[AWS Fargate](https://aws.amazon.com/fargate/)_, a serverless compute engine for containers, compatible with both _[Amazon Elastic Container Service (ECS)](https://aws.amazon.com/ecs/)_. I create the Dockerfile locally, push the image to the [Amazon Elastic Container Registry](https://aws.amazon.com/ecr/) using AWS CLI, and set up the service. This ensures both the API server and the frontend web server can be accessed publicly. For detailed instructions, refer to the article ["Deploying a Docker container with ECS and Fargate"](https://aws.plainenglish.io/deploying-a-docker-container-in-aws-using-fargate-5a19a140b018) by Esteban. Furthermore, the database is hosted on [Amazon RDS](https://aws.amazon.com/free/database/?trk=f8c749c2-a797-41e7-9b4d-743b10b206a3&sc_channel=ps&ef_id=Cj0KCQiAkKqsBhC3ARIsAEEjuJh1_2zTQF8FjZkweM1KxlXTQtH0rt2n1Aj_YvutO6p1EJGqzlCuYFoaAuGuEALw_wcB:G:s&s_kwcid=AL!4422!3!549058196825!p!!g!!aws%20sql%20database!11539887576!114142397722&gclid=Cj0KCQiAkKqsBhC3ARIsAEEjuJh1_2zTQF8FjZkweM1KxlXTQtH0rt2n1Aj_YvutO6p1EJGqzlCuYFoaAuGuEALw_wcB) as a SQL database server.
+
+  Now, you can access the mentioned API via http://3.26.53.87:8000
+  
+  > Example: `http://3.26.53.87:8000/search?name=BTC` would return `{"name":"Bitcoin","symbol":"BTC"}`
   ### 2. Docker
   Place the Docker file in the same directory and execute the following command.
   ```shell
