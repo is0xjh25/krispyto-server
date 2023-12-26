@@ -27,7 +27,7 @@ def search_crypto_prices():
     order_type = request.args.get('order_type')
 
     # Define valid values for order_by and order_type
-    valid_order_by_values = ['crypto', 'price', '24h', '7d', '1m', '24h-volume', 'market_cap']
+    valid_order_by_values = ['crypto', 'symbol', 'price', '24h', '7d', '1m', '24h-volume', 'market-cap']
     valid_order_type_values = ['asc', 'desc']
 
     # Validate parameters
@@ -181,6 +181,7 @@ def process_crypto(crypto, date):
 def order_crypto(processed_crypto, order_by, order_type):
     # Define a mapping of order_by values to corresponding fields in the processed_crypto data
     order_by_mapping = {
+        'symbol': 'symbol',
         'crypto': 'crypto',
         'price': 'price',
         '24h': '24h',
