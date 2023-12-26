@@ -18,28 +18,35 @@ Welcome to the backend repository of the Crypto Price Analysis project! Here, yo
 ## API Endpoints
 ### 1. Search Crypto Prices
 - **Endpoint:** `/dashboard`
+  
 - **Method:** `GET`
+  
 - **Description:** Retrieve historical crypto prices based on specified parameters.
+  
 - **Parameters:**
   - `id` (string, required): ID of the currency to retrieve prices for.
   - `date` (string, required, default: '2022-10-9'): Date to filter prices.
   - `order_by` (string, required, default: 'crypto', enum: ['crypto', 'price', '24h', '7d', '1m', '24h-volume', 'market_cap']): Attribute to order results by.
   - `order_type` (string, required, default: 'desc', enum: ['asc', 'desc']): Order results in 'asc' (ascending) or 'desc' (descending) order.
+    
 - **Responses:**
   - `200`: Search results matching criteria.
   - `204`: No data available.
   - `400`: Bad input parameter.
   - `404`: Bad request.
   - `500`: Database connection error.
+    
 - **Example:**
   - `[GET] http://localhost:5000/dashboard?id=all&date=2022-12-24&order_by=price&order_type=desc`
   - `[GET] http://localhost:5000/dashboard?id=btc,aave&date=2021-11-9&order_by=1m&order_type=asc`
+    
 ### 2. Search Crypto Exists In Database
 - **Endpoint:** `/search`
 - **Method:** `GET`
 - **Description:** Retrieve the name of a specific currency by name.
 - **Parameters:**
   - `name` (string, required): Name or symbol of the currency to retrieve.
+    
 - **Responses:**
   - `200`: Crypto found.
   - `204`: No data available.
@@ -54,9 +61,13 @@ Welcome to the backend repository of the Crypto Price Analysis project! Here, yo
 ## Development and Technologies
   ### 1. Server
   - **Language =>** Python
+
   - **Framework =>** Flask
+    
   - **Hosting =>** AWS
+    
   - **API =>** RESTful API meticulously documented using Swagger
+    
   ### 2. Database
   - **Type =>** SQL
   - **Database System =>** PostgreSQL
@@ -172,20 +183,22 @@ Welcome to the backend repository of the Crypto Price Analysis project! Here, yo
 - Environment Variables
   - Ensure the security of your application by handling sensitive information through environment variables.
   - A crucial step is to create an `.env` file to store sensitive configuration details.
+    
 - Sample .env Configuration
-```dotenv
-DB_ENDPOINT="your_database_endpoint"
+  ```dotenv
+  DB_ENDPOINT="your_database_endpoint"
+  
+  DB_USERNAME="your_database_username"
+  
+  DB_PASSWORD="your_database_password"
+  
+  DB_NAME="your_database_name"
+  
+  GOOGLE_FILE_ID="your_google_file_id"
+  
+  CSV_FILE_FOLDER="your_csv_file_folder"
+  ```
 
-DB_USERNAME="your_database_username"
-
-DB_PASSWORD="your_database_password"
-
-DB_NAME="your_database_name"
-
-GOOGLE_FILE_ID="your_google_file_id"
-
-CSV_FILE_FOLDER="your_csv_file_folder"
-```
 - Protect the Credentials
   - Never expose your .env file publicly or commit it to version control systems.
   - Add the .env file to the .gitignore to prevent accidental exposure.
@@ -242,6 +255,40 @@ CSV_FILE_FOLDER="your_csv_file_folder"
   ```
   
 ## Advanced Solution
+### Overview
+Incorporate an in-memory caching layer to boost performance and keep the AWS RDS database up-to-date.
+
+### Components
+1. **Application Layer:**
+   - Interacts with caching layer and AWS RDS.
+
+2. **Caching Layer:**
+   - Uses Redis/Memcached.
+   - Periodically updates cache from AWS RDS.
+   - Handles cache misses by fetching from AWS RDS.
+
+3. **AWS RDS (Original Database):**
+   - Source of truth.
+   - Continuously updated by caching layer.
+
+### Operations
+1. **Read:**
+   - Check cache.
+   - Cache hit: return data.
+   - Cache miss: fetch from AWS RDS, update cache, return.
+
+2. **Write:**
+   - Write to cache and AWS RDS for consistency.
+
+3. **Cache Update:**
+   - Time intervals or triggered by events.
+   - Eviction policies for cache management.
+
+### Benefits
+- **Improved Read Performance:** Caches frequently accessed data.
+- **Data Consistency:** Updates both cache and database on writes.
+- **Reduced Database Load:** Caching layer handles many read requests
+
 ## Developed By
 - The application is developed by _[is0xjh25 (Yun-Chi Hsiao)](https://is0xjh25.github.io)_.
 - Special thanks to the _[Greythorn Team](https://greythorn.com)_ for providing this coding challenge and their guidance throughout the development process. 
