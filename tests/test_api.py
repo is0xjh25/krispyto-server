@@ -55,7 +55,7 @@ def test_search_crypto_prices_favourite(client):
 # Test for searching crypto prices with invalid parameters
 def test_search_crypto_prices_not_found(client):
     response = client.get('/dashboard?id=xxx,btc&date=1999-10-23&order_by=price&order_type=asc')
-    assert response.status_code == 204
+    assert response.status_code == 404
 
 # Test for searching crypto existence by name
 def test_search_crypto_exists_name(client):
@@ -74,7 +74,7 @@ def test_search_crypto_exists_symbol(client):
 # Test for searching non-existing crypto by name
 def test_search_crypto_exists_name_not_found(client):
     response = client.get('/search?name=xxx')
-    assert response.status_code == 204
+    assert response.status_code == 404
 
 # Test for handling bad request
 def test_bad_request(client):

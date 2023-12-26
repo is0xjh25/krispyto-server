@@ -51,7 +51,7 @@ def search_crypto_prices():
 
     # Verify that there are records for the previous 30 days
     if not verify_date(crypto, date):
-        return jsonify({"warning": "Invalid value for 'date'. No records for the previous 30 days."}), 204
+        return jsonify({"error": "Invalid value for 'date'. No records for the previous 30 days."}), 404
 
     processed_crypto = process_crypto(crypto, date)
     ordered_crypto = order_crypto(processed_crypto, order_by, order_type)
@@ -80,7 +80,7 @@ def search_crypto_exists():
         response_data = {"name": currency.name, "symbol": currency.symbol}
         return jsonify(response_data), 200
     else:
-        return jsonify({"error": f"No currency found with name or symbol '{crypto_name}'."}), 204
+        return jsonify({"error": f"No currency found with name or symbol '{crypto_name}'."}), 404
 
 # Extracts the list of crypto symbols based on the provided crypto_id
 def read_crypto_id(crypto_id):

@@ -5,6 +5,7 @@ from config.settings import Config
 from flask_migrate import Migrate
 from utilities.helper import inspect_database
 from app.models import db, Currency, Record
+from flask_cors import CORS
 from app import routes
 
 migrate = Migrate()
@@ -12,6 +13,10 @@ migrate = Migrate()
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
+    
+    # Enable CORS
+    CORS(app)
+    app.config['CORS_HEADERS'] = 'Content-Type'
 
     db.init_app(app)
     migrate.init_app(app, db)
