@@ -64,7 +64,7 @@ Welcome to the backend repository of the Crypto Price Analysis project! Here, yo
 
   - **Framework =>** Flask
     
-  - **Hosting =>** AWS
+  - **Hosting =>** Amazon Elastic Container Service
     
   - **API =>** RESTful API meticulously documented using Swagger
     
