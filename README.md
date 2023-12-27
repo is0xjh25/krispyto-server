@@ -209,7 +209,7 @@ Welcome to the backend repository of the Crypto Price Analysis project! Here, yo
 
   Now, you can access the mentioned API via http://3.26.53.87:8000
   
-  > Example: `http://3.26.53.87:8000/search?name=BTC` would return `{"name":"Bitcoin","symbol":"BTC"}`
+  > Example: `http://3.107.0.250:8000/search?name=BTC` would return `{"name":"Bitcoin","symbol":"BTC"}`
   ### 2. Docker
   Place the Docker file in the same directory and execute the following command.
   ```shell
