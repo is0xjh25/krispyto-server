@@ -12,7 +12,7 @@
   
 ## Overview
 Welcome to the backend repository of the Crypto Price Analysis project! Here, you'll discover the server-side implementation of a system dedicated to analyzing historical crypto prices and delivering pertinent data through a RESTful API. Developed using Python and Flask, it employs a structured architecture with controllers and models utilizing Object–Relational Mapping. The deployment is seamlessly handled through Amazon Web Services (AWS). This readme comprehensively outlines the API endpoints and details the phases of structuring the database, development, and deployment. Feel free to explore the website and the backend server repository using the links provided below.
-> - _[Krispyto's Website](url)_
+> - _[Krispyto's Website](http://13.239.27.73:3000)_
 > - _[Krispyto's Web Server](https://github.com/is0xjh25/krispyto-web)_
 
 ## API Endpoints
@@ -64,7 +64,7 @@ Welcome to the backend repository of the Crypto Price Analysis project! Here, yo
 
   - **Framework =>** Flask
     
-  - **Hosting =>** AWS
+  - **Hosting =>** Amazon Elastic Container Service
     
   - **API =>** RESTful API meticulously documented using Swagger
     
@@ -207,8 +207,8 @@ Welcome to the backend repository of the Crypto Price Analysis project! Here, yo
   ### 1. AWS
   I leverage _[AWS Fargate](https://aws.amazon.com/fargate/)_, a serverless compute engine for containers, compatible with both _[Amazon Elastic Container Service (ECS)](https://aws.amazon.com/ecs/)_. I create the Dockerfile locally, push the image to the [Amazon Elastic Container Registry](https://aws.amazon.com/ecr/) using AWS CLI, and set up the service. This ensures both the API server and the frontend web server can be accessed publicly. For detailed instructions, refer to the article ["Deploying a Docker container with ECS and Fargate"](https://aws.plainenglish.io/deploying-a-docker-container-in-aws-using-fargate-5a19a140b018) by Esteban. Furthermore, the database is hosted on [Amazon RDS](https://aws.amazon.com/free/database/?trk=f8c749c2-a797-41e7-9b4d-743b10b206a3&sc_channel=ps&ef_id=Cj0KCQiAkKqsBhC3ARIsAEEjuJh1_2zTQF8FjZkweM1KxlXTQtH0rt2n1Aj_YvutO6p1EJGqzlCuYFoaAuGuEALw_wcB:G:s&s_kwcid=AL!4422!3!549058196825!p!!g!!aws%20sql%20database!11539887576!114142397722&gclid=Cj0KCQiAkKqsBhC3ARIsAEEjuJh1_2zTQF8FjZkweM1KxlXTQtH0rt2n1Aj_YvutO6p1EJGqzlCuYFoaAuGuEALw_wcB) as a SQL database server.
 
-  Now, you can access the mentioned API via http://3.26.53.87:8000
-  
+  > Now, you can access the mentioned API via http://3.26.53.87:8000
+
   > Example: `http://3.107.0.250:8000/search?name=BTC` would return `{"name":"Bitcoin","symbol":"BTC"}`
   ### 2. Docker
   Place the Docker file in the same directory and execute the following command.
