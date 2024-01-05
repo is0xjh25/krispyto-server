@@ -154,3 +154,10 @@ cython_debug/
 
 # downloaded data from Google Drive
 app/data/
+.DS_Store
+app/.DS_Store
+config/.DS_Store
+migrations/.DS_Store
+migrations/versions/.DS_Store
+tests/.DS_Store
+utilities/.DS_Store
