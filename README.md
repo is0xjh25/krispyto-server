@@ -12,9 +12,9 @@
   
 ## Overview
 Welcome to the backend repository of the Crypto Price Analysis project! Here, you'll discover the server-side implementation of a system dedicated to analyzing historical crypto prices and delivering pertinent data through a RESTful API. Developed using Python and Flask, it employs a structured architecture with controllers and models utilizing Object–Relational Mapping. The deployment is seamlessly handled through Amazon Web Services (AWS). This readme comprehensively outlines the API endpoints and details the phases of structuring the database, development, and deployment. Feel free to explore the website and the backend server repository using the links provided below.
+> - _[About Krispyto](https://www.youtube.com/watch?v=9F_1RaOwnSo)_ - Watch on Youtube
 > - ~~_[Krispyto's Website](http://13.239.27.73:3000)_~~ - N/A
 > - _[Krispyto's Web Server](https://github.com/is0xjh25/krispyto-web)_
-> - _[About Krispyto](https://www.youtube.com/watch?v=9F_1RaOwnSo)_ - Watch on Youtube
 
 ## API Endpoints
 ### 1. Search Crypto Prices
