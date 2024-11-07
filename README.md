@@ -291,7 +291,7 @@ Incorporate an in-memory caching layer to boost performance and keep the AWS RDS
 - **Reduced Database Load:** Caching layer handles many read requests
 
 ## Developed By
-- The application is developed by _[is0xjh25 (Yun-Chi Hsiao)](https://is0xjh25.github.io)_.
+- The application is developed by _[is0xJim](https://linktr.ee/is0xjh25)_.
 - Special thanks to the _[Greythorn Team](https://greythorn.com)_ for providing this coding challenge and their guidance throughout the development process. 
 <br/>
 <p align="left">
